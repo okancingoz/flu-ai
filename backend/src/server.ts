@@ -1,15 +1,16 @@
 import dotenv from "dotenv";
-import express from "express";
+import app from "./app";
 import { connectDB } from "./config/db";
+import { connectRedis } from "./config/redisClient";
 
 dotenv.config();
 
-const app = express();
 const PORT = process.env.PORT || 5000;
 
 (async () => {
   try {
     await connectDB();
+    await connectRedis();
 
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
@@ -19,5 +20,3 @@ const PORT = process.env.PORT || 5000;
     process.exit(1); // Exit the process with failure
   }
 })();
-
-
