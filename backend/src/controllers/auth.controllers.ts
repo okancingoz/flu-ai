@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { loginService, logoutService } from "../services/auth.service";
+import {
+  loginService,
+  logoutService,
+  registerService,
+} from "../services/auth.service";
 
 // Login controller
 export const login = asyncHandler(async (req: Request, res: Response) => {
@@ -23,4 +27,20 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
 
   await logoutService(token);
   res.status(200).json({ message: "Logout successful" });
+});
+
+export const register = asyncHandler(async (req: Request, res: Response) => {
+  const { name, username, email, password } = req.body;
+
+  if (!name || !username || !email || !password) {
+    res.status(400).json({ message: "Please provide all required fields" });
+    return;
+  }
+
+  const result = await registerService(name, username, email, password);
+
+  res.status(201).json({
+    message: "User registered successfully",
+    data: result,
+  });
 });

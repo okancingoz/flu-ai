@@ -10,4 +10,8 @@ export interface IUser {
   isActive: boolean;
   lastLogin?: Date;
   profilePicture?: string;
+
+  comparePassword(candidatePassword: string): Promise<boolean>;
+  
+  save(): Promise<IUser>;
 }

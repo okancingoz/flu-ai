@@ -48,3 +48,34 @@ export const logoutService = async (token: string) => {
 
   return { message: "Logout successful" };
 };
+
+export const registerService = async (
+  name: string,
+  username: string,
+  email: string,
+  password: string
+) => {
+  const existingUser = await User.findOne({
+    $or: [{ email }, { username }],
+    isActive: true,
+  });
+
+  if (existingUser) throw new AppError("User already exists", 400);
+
+  const newUser = new User({
+    name,
+    username,
+    email,
+    password,
+  });
+
+  await newUser.save();
+
+  return {
+    id: newUser._id,
+    name: newUser.name,
+    username: newUser.username,
+    email: newUser.email,
+    role: newUser.role,
+  };
+};
