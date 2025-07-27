@@ -1,4 +1,6 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import redisClient from "../config/redisClient";
 import User from "../models/User";
 import { AppError } from "../utils/AppError";
 import { generateToken } from "../utils/generateToken";
@@ -24,4 +26,25 @@ export const loginService = async (email: string, password: string) => {
       role: user.role,
     },
   };
+};
+
+export const logoutService = async (token: string) => {
+  const decoded = jwt.decode(token) as { exp: number } | null;
+
+  if (!decoded || !decoded.exp) {
+    throw new AppError("Invalid token", 400);
+  }
+
+  const currentTime = Math.floor(Date.now() / 1000);
+  const expireInSeconds = decoded.exp - currentTime;
+
+  if (expireInSeconds <= 0) {
+    throw new AppError("Token has already expired", 400);
+  }
+
+  await redisClient.set(`bl_${token}`, "blacklisted", {
+    EX: expireInSeconds,
+  });
+
+  return { message: "Logout successful" };
 };
