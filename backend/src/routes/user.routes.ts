@@ -8,22 +8,22 @@ import {
   updateUser,
 } from "../controllers/user.controller";
 import { verifyToken } from "../middlewares/auth.middleware";
+import { adminOnly } from "../middlewares/role.middleware";
 
 const router = express.Router();
 
-// Apply token verification middleware to all user routes
-router.use(verifyToken);
+router.route("/")
+  .get(verifyToken, adminOnly, getAllUsers);
 
-// Admin-only route to get all users
-router.route("/").get(getAllUsers);
+router.route("/me")
+  .patch(verifyToken, updateUser)
+  .delete(verifyToken, deleteUser);
 
-// User-specific routes
-router.route("/me").patch(updateUser).delete(deleteUser);
+router.route("/change-password")
+  .post(verifyToken, changePassword);
 
-// Change password route
-router.route("/change-password").post(changePassword);
-
-// Get user by ID (admin or self)
-router.route("/:id").get(getUserById).delete(forceDeleteUser);
+router.route("/:id")
+  .get(verifyToken, getUserById)
+  .delete(verifyToken, forceDeleteUser);
 
 export default router;

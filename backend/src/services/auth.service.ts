@@ -6,7 +6,9 @@ import { AppError } from "../utils/AppError";
 import { generateToken } from "../utils/generateToken";
 
 export const loginService = async (email: string, password: string) => {
-  const user = await User.findOne({ email, isActive: true });
+  const user = await User.findOne({ email, isActive: true }).select(
+    "+password"
+  );
   if (!user) throw new AppError("Invalid credentials or user not found", 401);
 
   const isPasswordValid = await bcrypt.compare(password, user.password);

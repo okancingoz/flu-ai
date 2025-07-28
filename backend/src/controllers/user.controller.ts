@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import {
   changePasswordService,
   deleteUserService,
+  forceDeleteUserService,
   getAllUsersService,
   getUserByIdService,
   UpdateUserInput,
@@ -34,7 +35,7 @@ export const getUserById = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const updateUser = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.user._id.toString();
+  const id = req.user._id.toString();
   const updateData: UpdateUserInput = req.body;
 
   const updatedUser = await updateUserService(id, updateData);
@@ -63,7 +64,7 @@ export const forceDeleteUser = asyncHandler(
       throw new AppError("Access denied", 403);
     }
 
-    const result = await deleteUserService(targetUserId);
+    const result = await forceDeleteUserService(targetUserId);
     res.status(200).json({ result });
   }
 );
