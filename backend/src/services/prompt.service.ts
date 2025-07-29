@@ -1,11 +1,12 @@
 import OpenAI from "openai";
+import { Prompt } from "../models/Prompt";
 
 interface GenerateResponseResult {
   response: string;
   alternatives: string[];
 }
 
-export async function generateResponse(
+export async function generateResponseService(
   promptText: string,
   language: string = "en"
 ): Promise<GenerateResponseResult> {
@@ -50,3 +51,9 @@ export async function generateResponse(
 
   return { response, alternatives };
 }
+
+export const getUserPromptHistoryService = async (id: string) => {
+  return await Prompt.find({ user: id })
+    .sort({ createdAt: -1 })
+    .select("-user");
+};
