@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 
 export interface IPrompt {
+  _id: string;
   user: Types.ObjectId;
   promptText: string;
   response: string;
