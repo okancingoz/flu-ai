@@ -1,5 +1,10 @@
 import { Types } from "mongoose";
 
+export interface IPhonetic {
+  text?: string;
+  audio?: string;
+}
+
 export interface IDefinition {
   definition: string;
   example?: string | null;
@@ -10,11 +15,6 @@ export interface IDefinition {
 export interface IMeaning {
   partOfSpeech: string;
   definitions: IDefinition[];
-}
-
-export interface IPhonetic {
-  text?: string;
-  audio?: string;
 }
 
 export interface IWord {

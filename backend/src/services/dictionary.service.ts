@@ -1,4 +1,4 @@
-import { IWord, IMeaning, IDefinition } from "../interfaces/word.interface";
+import { IMeaning, IWord } from "../interfaces/word.interface";
 import { AppError } from "../utils/AppError";
 
 export const getWordDefinitionFromAPI = async (
@@ -28,15 +28,16 @@ export const getWordDefinitionFromAPI = async (
 
   const origin: string | null = entry.origin || null;
 
-  const meanings: IMeaning[] = entry.meanings?.map((meaning: any) => ({
-    partOfSpeech: meaning.partOfSpeech,
-    definitions: meaning.definitions.map((def: any) => ({
-      definition: def.definition,
-      example: def.example || null,
-      synonyms: def.synonyms || [],
-      antonyms: def.antonyms || [],
-    })),
-  })) || [];
+  const meanings: IMeaning[] =
+    entry.meanings?.map((meaning: any) => ({
+      partOfSpeech: meaning.partOfSpeech,
+      definitions: meaning.definitions.map((def: any) => ({
+        definition: def.definition,
+        example: def.example || null,
+        synonyms: def.synonyms || [],
+        antonyms: def.antonyms || [],
+      })),
+    })) || [];
 
   return {
     word: entry.word,

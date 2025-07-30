@@ -1,9 +1,9 @@
 import express from "express";
-import { getWordMeaning } from "../controllers/dictionary.controller";
+import { saveUserWord } from "../controllers/word.controller";
 import { verifyToken } from "../middlewares/auth.middleware";
 
 const router = express.Router();
 
-router.get("/:word", verifyToken, getWordMeaning);
+router.post("/save", verifyToken, saveUserWord);
 
 export default router;

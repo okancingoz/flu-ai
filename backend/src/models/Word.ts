@@ -1,6 +1,14 @@
 import mongoose, { Document, Schema } from "mongoose";
 import { IWord } from "../interfaces/word.interface";
 
+const phoneticSchema = new Schema(
+  {
+    text: { type: String, default: null },
+    audio: { type: String, default: null },
+  },
+  { _id: false }
+);
+
 const definitionSchema = new Schema(
   {
     definition: { type: String, required: true },
@@ -31,6 +39,14 @@ const wordSchema = new Schema<IWord & Document>(
       required: [true, "Word is required"],
     },
     phonetic: {
+      type: String,
+      default: null,
+    },
+    phonetics: {
+      type: [phoneticSchema],
+      default: [],
+    },
+    origin: {
       type: String,
       default: null,
     },
