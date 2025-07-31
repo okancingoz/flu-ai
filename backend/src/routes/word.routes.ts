@@ -1,9 +1,9 @@
 import express from "express";
-import { saveUserWord } from "../controllers/word.controller";
+import { saveWord } from "../controllers/word.controller";
 import { verifyToken } from "../middlewares/auth.middleware";
 
 const router = express.Router();
 
-router.post("/save", verifyToken, saveUserWord);
+router.post("/save", verifyToken, saveWord);
 
 export default router;
